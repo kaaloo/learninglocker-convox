@@ -11,8 +11,8 @@ RUN mkdir /app
 WORKDIR /app
 
 # Download npm modules for cloud
-ADD package.json /tmp
-ADD package-lock.json /tmp
+ADD xapi-service/package.json /tmp
+ADD xapi-service/package-lock.json /tmp
 RUN cd /tmp && npm install
 
 # Move node_modules within app directory
@@ -23,11 +23,11 @@ RUN rm -rf /tmp/*
 RUN npm install -g pm2
 
 # Add source files
-ADD . .
-RUN cp .env.example .env
+ADD xapi-service .
+ADD xapi-service/.env.example .env
 
 # Build services
 RUN npm run build
 
 # Run Locker
-CMD pm2-docker pm2/xapi.json
+CMD node dist/server.js
