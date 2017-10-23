@@ -1,0 +1,9 @@
+.convox
+.env
+.git
+.gitignore
+./.heroku 
+Dockerfile.locker
+Dockerfile.nginx
+Dockerfile.xapi
+docker-compose.yml
