@@ -12,11 +12,11 @@ WORKDIR /app
 
 # Make sure unicode-json package installs ok
 ENV NODE_UNICODETABLE_UNICODEDATA_TXT=/app/UnicodeData.txt
-ADD UnicodeData.txt .
+ADD learninglocker/UnicodeData.txt .
 
 # Download npm modules for cloud
-ADD package.json /tmp
-ADD yarn.lock /tmp
+ADD learninglocker/package.json /tmp
+ADD learninglocker/yarn.lock /tmp
 RUN cd /tmp && yarn
 
 # Move node_modules within app directory
@@ -27,8 +27,8 @@ RUN rm -rf /tmp/*
 RUN yarn global add pm2
 
 # Add source files
-ADD . .
-RUN cp .env.example .env
+ADD learninglocker .
+ADD learninglocker/.env.example .env
 
 # Build services
 RUN yarn run build-all
