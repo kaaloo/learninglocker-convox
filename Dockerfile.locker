@@ -4,7 +4,7 @@ FROM node:alpine
 # Install additional packages
 RUN apk update && \
     apk upgrade && \
-    apk add make g++ python
+    apk add make g++ python bash
 
 # Create app directory
 RUN mkdir /app
@@ -29,9 +29,10 @@ RUN yarn global add pm2
 # Add source files
 ADD learninglocker .
 ADD learninglocker/.env.example .env
+ADD wait-for-it.sh .
 
 # Build services
 RUN yarn run build-all
 
-# Run Locker
-CMD pm2-docker pm2/all.json
+# Create site admin and run locker services
+CMD ./wait-for-it.sh "mongo:27017" -- node cli/dist/server createSiteAdmin "${ADMIN_EMAIL}" "${ADMIN_ORGANISATION}" "${ADMIN_PASSWORD}" && pm2-docker pm2/all.json
