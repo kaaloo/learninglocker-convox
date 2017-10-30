@@ -28,6 +28,7 @@ services:
       - ADMIN_ORGANISATION
       - ADMIN_PASSWORD
       - SMTP_HOST=smtp
+      - APP_SECRET
     volumes: 
       - ${PWD}/learninglocker/api/dist:/app/api/dist
       - ${PWD}/learninglocker/cli/dist:/app/cli/dist
