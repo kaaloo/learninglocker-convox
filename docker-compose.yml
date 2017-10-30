@@ -28,6 +28,7 @@ services:
       - ADMIN_ORGANISATION
       - ADMIN_PASSWORD
       - SMTP_HOST=smtp
+      - APP_SECRET
     links:
       - mongo
       - redis
