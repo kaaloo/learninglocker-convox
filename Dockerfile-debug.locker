@@ -1,0 +1,40 @@
+# Base image
+FROM node:alpine
+
+# Install additional packages
+RUN apk update && \
+    apk upgrade && \
+    apk add make g++ python bash
+
+# Create app directory
+RUN mkdir /app
+WORKDIR /app
+
+# Make sure unicode-json package installs ok
+ENV NODE_UNICODETABLE_UNICODEDATA_TXT=/app/UnicodeData.txt
+ADD learninglocker/UnicodeData.txt .
+
+# Download npm modules for cloud
+ADD learninglocker/package.json /tmp
+ADD learninglocker/yarn.lock /tmp
+RUN cd /tmp && yarn
+
+# Move node_modules within app directory
+RUN cp -a /tmp/node_modules .
+RUN rm -rf /tmp/*
+
+# Add pm2
+RUN yarn global add pm2
+
+# Add source files
+ADD learninglocker .
+ADD learninglocker/.env.example .env
+
+# Add other files
+ADD wait-for-it.sh .
+ADD init-site .
+ADD debug-all.json pm2/
+ADD getWebpackConfig.js lib/tools/
+
+# Create site admin and run locker services
+CMD ./wait-for-it.sh "mongo:27017" -- pm2-docker pm2/debug-all.json

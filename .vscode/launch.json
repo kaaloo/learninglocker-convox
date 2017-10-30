@@ -1,0 +1,41 @@
+{
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "name": "Attach to API",
+                "type": "node",
+                "request": "attach",
+                "port": 9229,
+                "address": "localhost",
+                "localRoot": "${workspaceRoot}/learninglocker",
+                "remoteRoot": "/app",
+                "outFiles": [
+                    "${workspaceRoot}/learninglocker/api/dist/**/*.js"
+                ]
+            },
+            {
+                "name": "Attach to UI Server",
+                "type": "node",
+                "request": "attach",
+                "port": 9230,
+                "address": "localhost",
+                "localRoot": "${workspaceRoot}",
+                "remoteRoot": "/app",
+                "outFiles": [
+                    "${workspaceRoot}/learninglocker/ui/dist/**/*.js"
+                ]
+            },
+            {
+                "name": "Attach to Worker",
+                "type": "node",
+                "request": "attach",
+                "port": 9231,
+                "address": "localhost",
+                "localRoot": "${workspaceRoot}",
+                "remoteRoot": "/app",
+                "outFiles": [
+                    "${workspaceRoot}/learninglocker/worker/dist/**/*.js"
+                ]
+            }                        
+        ]
+    }

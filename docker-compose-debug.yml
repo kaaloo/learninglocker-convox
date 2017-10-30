@@ -1,0 +1,61 @@
+version: "2"
+services:
+  mongo:
+    image: mongo:latest
+    volumes:
+      - /data/db
+    ports:
+      - 27017
+  redis:
+    image: redis:alpine
+    ports:
+      - 6379
+  nginx:
+    build:
+      context: .
+      dockerfile: Dockerfile.nginx
+    links:
+      - locker
+    ports:
+      - 80:80
+  locker:
+    build:
+      context: .
+      dockerfile: Dockerfile-debug.locker
+    environment:
+      - MONGODB_PATH=mongodb://mongo:27017/learninglocker_v2
+      - ADMIN_EMAIL
+      - ADMIN_ORGANISATION
+      - ADMIN_PASSWORD
+      - SMTP_HOST=smtp
+    volumes: 
+      - ${PWD}/learninglocker/api/dist:/app/api/dist
+      - ${PWD}/learninglocker/cli/dist:/app/cli/dist
+      - ${PWD}/learninglocker/ui/dist:/app/ui/dist
+      - ${PWD}/learninglocker/worker/dist:/app/worker/dist
+    links:
+      - mongo
+      - redis
+      - smtp
+    ports:
+      - 3000
+      - 8080
+      - 3131:3131
+      - 9229:9229
+      - 9230:9230
+      - 9231:9231
+  xapi:
+    build:
+      context: .
+      dockerfile: Dockerfile.xapi
+    environment:
+      - MONGODB_PATH=mongodb://mongo:27017/learninglocker_v2
+      - SMTP_HOST=smtp
+    links:
+      - redis
+      - mongo
+      - smtp
+  smtp:
+    image: tecnativa/smtp-sink
+    ports:
+      - 25

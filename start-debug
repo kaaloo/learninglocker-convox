@@ -1,0 +1,11 @@
+#!/bin/bash
+(
+    cd learninglocker
+    yarn dev-cli-server
+    yarn dev-worker-server
+    yarn dev-api-server
+    yarn dev-ui-server
+    yarn build-ui-client
+    cd ..
+)
+convox start -f docker-compose-debug.yml
