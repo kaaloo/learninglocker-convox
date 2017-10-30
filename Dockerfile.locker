@@ -29,10 +29,13 @@ RUN yarn global add pm2
 # Add source files
 ADD learninglocker .
 ADD learninglocker/.env.example .env
-ADD wait-for-it.sh .
 
 # Build services
 RUN yarn run build-all
 
+# Add other files
+ADD wait-for-it.sh .
+ADD init-site .
+
 # Create site admin and run locker services
-CMD ./wait-for-it.sh "mongo:27017" -- node cli/dist/server createSiteAdmin "${ADMIN_EMAIL}" "${ADMIN_ORGANISATION}" "${ADMIN_PASSWORD}" && pm2-docker pm2/all.json
+CMD ./wait-for-it.sh "mongo:27017" -- pm2-docker pm2/all.json

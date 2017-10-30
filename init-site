@@ -1,0 +1,3 @@
+#!/bin/sh
+node cli/dist/server createSiteAdmin "${ADMIN_EMAIL}" "${ADMIN_ORGANISATION}" "${ADMIN_PASSWORD}"
+      
