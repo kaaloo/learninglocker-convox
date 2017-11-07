@@ -36,17 +36,6 @@ services:
     ports:
       - 3000
       - 8080
-  xapi:
-    build:
-      context: .
-      dockerfile: Dockerfile.xapi
-    environment:
-      - MONGODB_PATH=mongodb://mongo:27017/learninglocker_v2
-      - SMTP_HOST=smtp
-    links:
-      - redis
-      - mongo
-      - smtp
   smtp:
     image: tecnativa/smtp-sink
     ports:
